@@ -54,4 +54,4 @@ L'esame è superato con una delle combinazioni:
 1) sorgente: formato leggibile
 2) file oggetto: codice macchina
 3) Linker: codice macchina + librerie necessarie per l'esecuzione
-Fine
+
