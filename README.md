@@ -1,3 +1,2 @@
-helo
-
-Ciò che scrivo è scritto da obsidian
+Questi sono appunti presi durante le lezioni di Laboratorio di Programmazione all'Università di Padova.
+Il corso è tenuto da due professori (divisi in canale 1 e canale 2): Stefano Ghidoni e Luca Tonin
