@@ -1,4 +1,4 @@
-## Stato di una classe
+### Stato di una classe
 Esempio di una macchina del caffè. Lo stato di una macchina del caffè può essere:
 - Acceso-spento
 - Idle/not-idle
@@ -32,3 +32,55 @@ Una classe può essere composta da:
 
 Data member e function member
 
+- Una classe è accessibile attraverso la notazione _oggetto.membro
+- Una classe si divide in due interfacce:
+	- **Interfaccia public**:
+		- Quello che l'utente vede
+		- Accessibile dagli utenti
+	- **Interfaccia private**:
+		- Quello che solo il programmatore vede
+		- Non è direttamente accessibile
+		- Lettura e scrittura avvengono solo tramite interfaccia
+- Di default, _i membri di una classe sono privati_
+
+#### Public - Private
+```c
+class X { 
+	public: 
+		// membri pubblici: 
+		// interfaccia utente 
+		// funzioni // tipi
+		// eventuali dati (meglio tenerli privati) 
+	private: 
+		// membri privati 
+		// dettagli implementativi 
+		// funzioni 
+		// tipi 
+		// dati 
+};
+```
+
+### Struct
+- Varianti delle classi
+- Unica differenza: i membri di default sono pubblici
+- Usate quando ci sono dati ma non funzioni
+- Eredità di scrittura dal c
+
+```c++
+struct X{
+	int m;
+}
+
+class X{
+	public:
+		int m;
+}
+```
+
+In C++ posso programmare ad oggetti con una serie di potenti strumenti, come:
+- Funzioni membro 
+- Costruttori 
+- Protezione dei dati 
+- Overloading degli operatori 
+- Gestione della copia dei dati
+- (Helper function)
