@@ -97,3 +97,103 @@ Gestito tramite file di testo: CMakeLists.txt
 ![[processo cmake.png.png]]
 
 ## Processo lato utente
+Per esempio se vogliamo prendere un progetto opensource.
+Per compilare un progetto con Cmake abbiamo due tasti:
+- Configure
+- Generate
+
+Scaricare un sorgente gestito con CMake permette di avere: 
+- I file sorgenti del progetto 
+- La descrizione del progetto 
+- Un sistema che compila il progetto in autonomia 
+- Un sistema per gestire la compilazione dei moduli 
+- Parti del progetto possono essere compilate o meno a seconda delle impostazioni
+Ad esempio per un progetto possiamo decidere quali moduli compilare oppure no, alleggerendo la compilazione.
+
+Tipica gestione di un progetto CMake:
+- Lanciare CMake (es., GUI) 
+- Selezionare la directory contenente il sorgente 
+- Selezionare la directory che conterrà i prodotti della compilazione 
+- Standard: [root sorgente]/build 
+- Configure: legge e scrive configurazione standard
+- Eventuale selezione/deselezione dei moduli 
+	- Se ci sono modifiche: configure 
+- Generate
+
+- Generate crea i file per il sistema di building in uso 
+- Dopo generate si chiude CMake e si compila con il normale flusso di lavoro
+
+## Processo lato sviluppatore
+Creo una descrizione del progetto nello standard Cmake
+- Scrivo a mano i CmakeLists.txt
+- Uso IDE per generarli automaticamente
+	- Più complicati
+	- In genere, non devono essere modificati
+		- Possono essere sovrascritti in automatico
+Capiamo come si scrive a manina:
+
+1. Setto versione minima di Cmake
+```c++
+cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+```
+2. Nome al progetto
+```c++
+project(<name> VERSION <version> LANGUAGES CXX)
+```
+3. Seleziona librerie con dipendenze
+```c++
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+```
+4. Target per la creazione di un eseguibile
+```c++
+add_executable(tool
+	main.cpp
+	another_file.cpp		  
+	)
+// qui gli header ci possono stare, ed è corretto
+```
+5. Target per la creazione di una libreria 
+```c++
+add_library(foo STATIC
+	foo1.cpp	
+	foo2.cpp
+	)
+```
+
+#### Esempio completo
+
+```ruby
+ltonin@ltonin-laptop:~/Rational/ 
+├── bin 
+├── build 
+├── CMakeLists.txt 
+├── include 
+│ 
+	└── rational.h 
+├── README.txt 
+└── src 
+	├── main.cpp 
+	└── rational.cpp
+```
+
+```scss
+cmake_minimum_required(VERSION 2.84 FATAL_ERROR) 
+set(CMAKE_CXX_STANDARD 11) 
+project(rational) 
+
+include_directories(include) 
+
+add_library(${PROJECT_NAME} SHARED 
+	src/rational.cpp) 
+
+add_executable(main bin/main.cpp) 
+
+target_link_libraries(main ${PROJECT_NAME})
+```
+
+```ruby
+ltonin@ltonin-laptop:~/Rational/$ mkdir build 
+ltonin@ltonin-laptop:~/Rational/$ cd build 
+ltonin@ltonin-laptop:~/Rational/$ cmake .. 
+ltonin@ltonin-laptop:~/Rational/$ make
+```
