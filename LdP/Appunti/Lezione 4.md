@@ -293,4 +293,36 @@ enum Month {
 Month m = feb; // non genera errore
 ```
 ---
-## Overload degli operatori
+## Overloading degli operatori
+In C++ è possibile implementare quasi tutti gli operatori per operandi di tipo definito dall'utente. In sostanza, posso prendere un operatore classico come +,-, /,<<, ecc..., ed adattarlo al mio oggetto. 
+
+L'overloading è implementato creando una funzione con un nome specifico 
+- operator+, operator++, operator*, operator[], ... 
+Il C++ riconosce questo pattern e traduce
+```c++
+Date d {2010, Mon::feb, 21}; 
+	++d; // equivalente a operator++(d), 
+		 // oppure a d.operator++()
+```
+Serve per forza almeno un argomento UDT, non è possibile fare l'overloading di tipi built-in già esistenti. Si tratta comunque di uno strumento potente, ma bisogna stare attenti a definire operatori con significati controintuitivi
+
+### Overloading operatore++
+Operator++ ha due implementazioni:
+- Pre-incremento 
+```c++
+Month& operator++(Month& m) { 
+	m = (m == Month::dec) ? Month::jan : Month(int(m) + 1); 
+	return m;
+}
+```
+- Post-incremento
+```c++
+Month operator++(Month& m, int) { 
+	Month m_temp = m; m = (m == Month::dec) ? Month::jan : Month(int(m) + 1); 
+	return m_temp;
+}
+```
+
+L'operatore _?_ serve a controllare se `m == Month::dec`, sennò `Month(int(m) + 1)`.
+
+Vedi esempio di overloading nel file: [[L04.4 - Esempio di overloading.pdf]]

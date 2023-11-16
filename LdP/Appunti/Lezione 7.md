@@ -101,7 +101,13 @@ Ci sono risorse da gestire
 Un costruttore che riceve un singolo argomento definisce: una conversione implicita da quell'argomento alla classe
 
 ```c++
-class complex { public: complex(double); // conversione da double a complex complex(double, double); // ... }; complex z1 = 3.14; // ok: conversione complex z2 = complex{1.2, 3.4};
+class complex { 
+	public: complex(double); // conversione da double a complex 
+	complex(double, double); 
+	// ... 
+}; 
+complex z1 = 3.14; // ok: conversione complex 
+z2 = complex{1.2, 3.4};
 ```
 
 A volte questa cosa ci piace poco, per esempio in vector, c'è un costruttore che accetta un int, usato per costruire vettori di n elementi
