@@ -108,4 +108,72 @@ void sizes(char ch, int i, int* p) {
 }
 ```
 
+### In sintesi
+Creato un puntatore tipo* p:
+- Usi l'indirizzo del puntatore con p
+- Usi il contenuto del puntatore con * p
+
 ---
+
+# Puntatori, reference, cast
+
+### Void* e cast
+I puntatori hanno un minimo check sul tipo. **Void*** permette di saltare qualsiasi controllo. 
+- Void* rappresenta il concetto puro di "indirizzo di memoria" senza indicazioni su come usarla
+- È un puntatore a memoria raw
+- Devo fornire indicazioni su come deve essere usata la memoria puntata
+Occhio alla differenza: void e void*.
+- È possibile assegnare qualsiasi puntatore a un void*
+
+```c++
+int v1 = 7; 
+double v2 = 3.14; 
+void* pv1 = &v1; 
+void* pv2 = &v2;
+
+void f(void* pv) 
+{ 
+	void* pv2 = pv; // ok 
+	double* pd = pv; // no! Conversione tra tipi 
+					// incompatibili 
+	*pv = 7 // no! non posso dereferenziare 
+			// (che oggetto è?) 
+	pv[2] = 7; // no! Stessa ragione 
+	
+	int* pi = static_cast<int*> (pv); // ok, conversione 
+									// esplicita }
+```
+
+### Cast
+Si tratta di conversione esplicita tra i tipi (inclusi i puntatori): *static_cast*
+- Check avviene al tempo di compilazione, nessun check run-time
+Due strumenti di conversione "*potentially even nastier*", da usare consapevolmente:
+- **reinterpret_cast**: può fare il cast fra tipi totalmente indipendenti, es.: int e double* 
+- **const_cast**: elimina const
+
+In sostanda dice al compilatore: fidati di me, so quello che faccio! DA STARE ATTENTI
+
+#### I pochi casi in cui è giusto farlo
+I cast servono principalmente:
+- A interfacciarsi con HW
+- O altro codice non modificabile
+
+``` c++
+Register* in = reinterpret_cast<Register*>(0xff); 
+//Dice al compilatore che questa area di memoria deve essere interpretata come un Register
+
+void f(const Buffer* p)
+{ 
+	Buffer* b = const_cast<Buffer*>(p); 
+	//Necessario perché la libreria (di terze parti) che sto usando mi fornisce solo un const Buffer* che però io voglio modificare
+	// ... 
+}
+```
+Regole d'oro:
+- Prima di utilizzare un cast, riguardare il codice e vedere se si può fare a meno
+- Se si deve utilizzare, meglio lo static_cast
+
+## Puntatori e references
+Una reference è come un puntatore:
+- Immutabile
+- Dereferenziato automaticamente
