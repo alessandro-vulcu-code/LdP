@@ -327,3 +327,78 @@ p[2] = 6;
 p[-3] = 9;
 ```
 ![[puntatore2.png]]
+
+## Aritmetica dei puntatori
+- I puntatori sono tipi che supportano la somma e la sottrazione con interi
+- Sommare o sottrarre un intero N da un puntatore significa spostare il puntatore di N slot a destra o a sinistra
+- Operatori: +, -, +=, -=
+- Lo slot dipende dal dato puntato
+- L'aritmetica è sensibile al contesto
+#### Esempio
+```c++
+double* q = pd;
+q = pd + 2;
+```
+![[Pasted image 20231119155414.png]]
+
+```c++
+*p = 7; 
+p += 2;
+```
+![[Pasted image 20231119155446.png]]
+
+## Array e puntatori
+
+### Decadimento di un array
+- Il nome di un array è un puntatore const al suo primo elemento
+- È un rvalue! Cioè un valore, non una variabile
+- Non possiamo usarlo per la copia
+```c++
+int x[100]; 
+int y[100]; 
+// ... 
+x = y;          // errore 
+int z[100] = y; // errore
+```
+
+- Passare un array a una funzione significa passare il puntatore, perciò si ha una perdita di informazione sulla dimensione dell'array
+
+Lo vediamo con un esempio sulle stringe (C-style)
+```c++
+int strlen(const char a[]) 
+{ 
+	int count = 0; 
+	while (a[count]) 
+	{ 
+		++count; 
+	} 
+	return count; 
+} 
+
+char lots[100000]; 
+
+void f() 
+{ 
+	int nchar = strlen(lots); 
+	// ... 
+}
+```
+
+- Strlen (lots) è considerato equivalente a strlen (&lots[0])
+- Il decadimento serve per evitare copie non desiderate
+- Un comportamento un po' antiquato che deriva da C, C++ lo mantiene per retrocompatibilità
+
+```c++
+char ac[] = "Beorn"; //stringa stile c 
+char* pc = "Howdy"; //puntatore alla prima poszione dell'array 
+					//cioé 'H'
+```
+
+### Inizializzazione di un array
+```c++
+int ai[] = { 1, 2, 3, 4, 5, 6 }; // dimensione dedotta: 6 
+int ai2[100] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // gli altri 
+										// inizializzati a 0 
+double ad[100] = {}; // tutti inizializzati a 0.0 
+char chars[] = { 'a', 'b', 'c' }; // nessuno 0 terminatore
+```
