@@ -177,3 +177,153 @@ Regole d'oro:
 Una reference è come un puntatore:
 - Immutabile
 - Dereferenziato automaticamente
+Oppure come un nome alternativo per un oggetto.
+
+### Confronto
+*Puntatori*:
+1) Assegnamento: cambia il valore del puntatore, non dell'oggetto puntato
+2) Per cambiare il valore dell’oggetto puntato: *deference*
+
+```c++
+int x1 = 10; 
+
+int* p1 = &x1; 
+
+p1 = 7; // sbagliato e // pericoloso!! 
+
+*p1 = 7; // corretto
+```
+
+3) Per accedere all'oggetto puntato: _*_ oppure *[]*
+```c++
+*p1 = 4;
+```
+
+4) Assegnamento: copia del puntatore, non dell'oggetto puntato (**shallow copy**)
+```c++
+int i, j; 
+
+int *p1 = &i; 
+
+int *p2 = &j; 
+
+p2 = p1; // copia del // puntatore
+```
+
+5) Esiste il null pointer
+
+*Reference*:
+1) Assegnamento: cambio valore dell'oggetto
+```c++
+int y1 = 10; 
+
+int& r1 = y1; 
+
+r1 = 7;
+```
+
+2)  Nessun operatore per accedere al dato puntato
+```c++
+r1 = 4;
+```
+
+3) Assegnamento: copia dell'oggetto a cui si riferisce (**deep copy**)
+```c++
+int i, j; 
+
+int &r1 = i; 
+
+int &r2 = j; 
+
+r2 = r1; // copia del contenuto
+```
+
+4) Non esiste una reference non valida
+
+## Parametri puntatori e reference
+Sappiamo che facendo una chiamata a funzione passando un parametro reference, non creo una nuova copia di quell'oggetto ma passo il riferimento di quella variabile. 
+
+Con i puntatori posso ottenere lo stesso effetto, volendo si può cambiare il valore di una variabile in tre modi:
+
+```c++
+int incr_v(int x) { return x + 1; } 
+
+void incr_p(int* p) { ++*p; } 
+
+void incr_r(int& r) { ++r; }
+```
+
+Quale scegliere? Come al solito dipende:
+- Il ritorno del valore è:
+	- Più chiaro e meno soggetto ad errori
+	- Va bene per oggetti piccoli
+	- Oppure per oggetti grandi se hanno il move constructor
+
+Reference vs. Puntatore
+- I puntatori sono espliciti
+- I puntatori possono aver valore nullptr, le reference no
+- Un criterio:
+	- Se no-object è un valore plausibile: puntatore
+	- Altrimenti: reference/const reference
+
+---
+
+# Array
+Definzione: sequenza omogenea di oggetti allocati in spazi di memoria contigui.
+- Stesso tipo, e nessuno spazio vuoto tra elementi
+- Indicizzati con []
+- Accesso casuale
+- Nessun controllo su lettura/scrittura fuori range, quindi facile fare errori difficili da trovare
+
+Gli std:: vector sono vettori dinamici, intelligenti, di alto livello. Gli array "stile C" sono strutture dati più semplici, più antiche. Sono necessari in alcune circostanze (più avanti nel corso).
+
+### Dimensione di un array
+- La dimensione di un array è fissa, una volta definito.
+	- Per modificarne la lunghezza va creato un array più lungo in cui copio i dati dentro
+- La dimensione di un array:
+	- Deve essere una costante (literal o const) conosciuta a tempo di compilazione
+- Esistono anche VLA (Variable Length Array)
+	- Fanno parte dello standard C 99
+	- Non sono standard C++
+	- GCC li accetta
+
+Un array può essere insaziato come variabile:
+- Variabili globali
+- Variabili locali
+- Ma attenzione alla memoria nello stack!
+
+Gli argomenti di funzioni vengono *trasformati in puntatori*
+
+Esempio di codice
+```c++
+const int max = 100; int gai[max]; 
+// array globale, sempre disponibile 
+
+void f(int n) 
+{ 
+	char lac[20]; // array locale: vive fino all'uscita 
+					// dallo scope 
+	int lai[60]; 
+	
+	double lad[n]; // errore: dimensione non costante 
+}
+```
+
+## Puntatori a elementi di un array
+Possiamo definire puntatori a elementi di un array
+```c++
+double ad[10]; 
+double* p = &ad[5];
+```
+![[puntatore1.png]]
+
+Possiamo usare subscript e dereference su p
+```c++
+double ad[10]; 
+double* p = &ad[5]; 
+
+*p = 7; 
+p[2] = 6; 
+p[-3] = 9;
+```
+![[puntatore2.png]]
