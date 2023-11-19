@@ -339,13 +339,13 @@ p[-3] = 9;
 double* q = pd;
 q = pd + 2;
 ```
-![[Pasted image 20231119155414.png]]
+![[puntatore ad array.png]]
 
 ```c++
 *p = 7; 
 p += 2;
 ```
-![[Pasted image 20231119155446.png]]
+![[puntatore ad array2.png]]
 
 ## Array e puntatori
 
