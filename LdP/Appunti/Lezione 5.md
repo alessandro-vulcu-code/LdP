@@ -395,6 +395,7 @@ char* pc = "Howdy"; //puntatore alla prima poszione dell'array
 ```
 
 ### Inizializzazione di un array
+Ecco alcuni modi per inizializzare un array
 ```c++
 int ai[] = { 1, 2, 3, 4, 5, 6 }; // dimensione dedotta: 6 
 int ai2[100] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // gli altri 
@@ -402,3 +403,41 @@ int ai2[100] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // gli altri
 double ad[100] = {}; // tutti inizializzati a 0.0 
 char chars[] = { 'a', 'b', 'c' }; // nessuno 0 terminatore
 ```
+
+### Problemi legati agli array
+Alcuni problemi classici:
+- Accesso usando un puntatore non inizializzato (In particolare: puntatori membro)
+```c++
+int* p; 
+*p = 9; // errore! Accesso usando ptr non 
+		// inizializzato
+```
+
+- Accesso a un oggetto uscito dallo scope
+```c++
+int* f() 
+{ 
+	int x = 7; 
+	// ... 
+	return &x; 
+} 
+
+int* p = f(); 
+*p = 15; // a cosa punta?
+```
+
+- Un caso logicamente analogo
+```c++
+std::vector& ff() 
+{ 
+	std::vector x(7); 
+	return x; 
+} // x è distrutto qui! 
+
+std::vector& p = ff(); 
+p[4] = 15; // ouch! (BS)
+```
+
+A cosa si riferisce p?
+La funzione `ff` restituisce un riferimento a un oggetto locale, il che comporta un comportamento non definito. 
+Quindi, il riferimento `p` diventa un riferimento non valido dopo la fine della funzione `ff`.
