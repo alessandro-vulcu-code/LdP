@@ -124,7 +124,7 @@ vector v = 10; // crea un vector di 10 elementi
 v = 20; // assegna un vector di 20 elementi void f(const vector&); f(10); // chiama f con un vettore di 10 elementi
 ```
 
-Lo posso eliminare con *explicit*, e impedisco che il compilatore accetti le righe viste nel codice precedente.
+Lo posso eliminare con *explicit*, e impedisco che il compilatore accetti le righe viste nel codice precedente. Evita cast indesiderati
 
 
 ### Analizzare costruttori e distruttori
