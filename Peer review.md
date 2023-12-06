@@ -87,7 +87,8 @@ BookShelf& BookShelf::operator=(const BookShelf& v) {
 }
 ```
 
-9) Nel costruttore di copia, ci è parso molto strano l'utilizzo di `*this = v;`. A seguito di alcune prove abbiamo capito che ciò che fa è sostituire l'operazione di copia. La copia avviene con successo, tuttavia secondo noi, per evitare errori spiacevoli soprattutto se l'overload di `operator=` è mal implementato, è più sicuro utilizzare `copy(v.elem, v.elem + vector_length, elem)`, come abbiamo visto a lezione
+9) Nel costruttore di copia, ci è parso molto strano l'utilizzo di `*this = v;`. A seguito di alcune prove abbiamo capito che ciò che fa è sostituire l'operazione di copia. Esso funziona, tuttavia secondo noi non è la pratica consigliata. 
+	Il costruttore di copia dovrebbe inizializzare direttamente i membri dati dell'oggetto, piuttosto che utilizzare l'operatore di assegnazione, perché l'operatore di assegnazione è destinato a essere utilizzato su oggetti già esistenti, non su oggetti che stanno ancora venendo creati. Perciò, è meglio utilizzare `copy(v.elem, v.elem + vector_length, elem)` come abbiamo visto a lezione.
 ```c++
 BookShelf::BookShelf(const BookShelf& v) { // copy constructor
 	vector_length = v.vector_length;
@@ -123,7 +124,7 @@ BookShelf::~BookShelf() { // distruttore
 }   //verifica della corretteza del codice ISBN approssimativa
 ```
 
-3) [riga 98 - 99]: nella funzione returnBook () viene settato lo stato di book a true, ma se uso la funzione su un libro già disponibile, non viene controllata la disponibilità. Quindi controintuitivamente potrei restituire un libro già presente. Sarebbe meglio mandare in output un messaggio che informi della disponibilità (come fatto per il metodo borrowBook ())
+3) [riga 98 - 99]: nella funzione `returnBook()` viene settato lo stato di book a `true`, ma se uso la funzione su un libro già disponibile, non viene controllata la disponibilità. Quindi controintuitivamente potrei restituire un libro già presente. Sarebbe meglio mandare in output un messaggio che informi della disponibilità (come fatto per il metodo `borrowBook()`)
 ```c++
 void Book::returnBook() {
 	book_state = true;
@@ -134,8 +135,15 @@ La classe Book è funzionate, da rivedere con un po' di accortezza soprattutto l
 
 ---
 ## Date.cpp
-- L'overloading di `operator=` non è necessario, in quanto non ritorna un riferimento
-- Qual è il senso di fare l'overload di `operator<<` solo per il Month? Lo `static_cast` è preferibile non usarlo
+- L'overloading di `operator=` non è necessario, in quanto non ritorna un riferimento. Infatti, l'assegnazione tra oggetti dello stesso tipo, se si limita a copiare solo gli attributi da un oggetto ad un altro, funziona lo stesso.
+
+- L'overload di `operator<<` che accetta un Month non è utilizzato da nessuna parte. Lo `static_cast` è preferibile non usarlo
+```c++
+std::ostream& operator<<(std::ostream& os, Date::Month month) { //???
+    os<< static_cast<int>(month);
+    return os;
+}
+```
 A parte questi due punti, Date è corretto e funzionante
 
 ---
