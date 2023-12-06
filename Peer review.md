@@ -87,8 +87,17 @@ BookShelf& BookShelf::operator=(const BookShelf& v) {
 }
 ```
 
-9) 
-10) Il distruttore non ha `elem = nullptr`
+9) Nel costruttore di copia, ci è parso molto strano l'utilizzo di `*this = v;`. A seguito di alcune prove abbiamo capito che ciò che fa è sostituire l'operazione di copia. La copia avviene con successo, tuttavia secondo noi, per evitare errori spiacevoli soprattutto se l'overload di `operator=` è mal implementato, è più sicuro utilizzare `copy(v.elem, v.elem + vector_length, elem)`, come abbiamo visto a lezione
+```c++
+BookShelf::BookShelf(const BookShelf& v) { // copy constructor
+	vector_length = v.vector_length;
+	max_length = v.max_length;
+	elem = new Book[max_length];
+	*this = v;
+	// meglio copy(v.elem, v.elem + vector_length, elem);
+}
+```
+1) Il distruttore non ha `elem = nullptr`
 ```c++
 BookShelf::~BookShelf() { // distruttore
     delete[] elem;
