@@ -68,7 +68,7 @@ void BookShelf::push_back(Book b) {
 
 6) <span style="color:#00b050">Suggerimento</span>: nel file header `Bookshelf.h` avrei dato un nome diverso a `vector_length` e `max_lenght`, perché ambigui e possono essere confusi anche da chi legge il codice.
 
-7) Il metodo `print()` andrebbe fatto con l'overload di `operator<<`
+7) Il metodo `print()` andrebbe sostituito con l'overload di `operator<<`
 
 8) Nel `overload=:
 	- Di per se è funzionante, però scrivere `delete[] elem` nella prima riga non è ideale, andrebbe fatto dopo la copia
@@ -97,7 +97,8 @@ BookShelf::BookShelf(const BookShelf& v) { // copy constructor
 	// meglio copy(v.elem, v.elem + vector_length, elem);
 }
 ```
-1) Il distruttore non ha `elem = nullptr`
+
+10) Il distruttore non ha `elem = nullptr`
 ```c++
 BookShelf::~BookShelf() { // distruttore
     delete[] elem;
