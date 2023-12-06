@@ -485,3 +485,95 @@ Per ogni classe (non ogni oggetto!) è definita una tabella che definisce quali 
 
 La virtual table è implementata per ogni classe, bla bla bla
 Il virtual pointer mi fa arrivare alla virtual table, è definito per ogni oggetto.
+
+---
+
+# Recap polimorfismo
+- Polimorfismo: capacità di associare comportamenti diversi alla stessa notazione generica (Vandevoorde/Josuttis)
+- Ereditarietà e funzioni virtuali e template ci permettono di usare il polimorfismo
+
+### Polimorfismo dinamico
+Polimorfismo dinamico: gestito tramite 
+- Ereditarietà 
+- Funzioni virtuali
+
+Identificare un insieme comune di funzionalità tra classi collegate
+Creare il corrispondente insieme di funzioni virtuali nella classe base 
+
+![[Pasted image 20231206144303.png]]
+![[Pasted image 20231206144315.png]]
+Il polimorfismo aggangiato all'esigenza di reimplementare `draw()`, altrimenti non compila.
+
+```c++
+void MyDraw(GeoObj const& obj) { 
+	obj.draw(); // chiamata alla funzione draw() della // relativa classe 
+	}
+```
+
+Chiamata a funzione virtuale, esiste una sola funzione `MyDraw()` per disegnare tutte le forme:
+- La differenziazione è gestita dalle varie funzioni `draw()` nelle classi derivate
+- Formalmente chiama solo una delle tre `draw()`, grazie all'override
+
+## Polimorfismo statico
+La stessa sintassi è condivisa dalle varie forme. Le classi o funzioni sono definite in maniera indipendente, ma devono poter gestire la stessa sintassi.
+Il polimorfismo si concretizza specificando la classe o funzione con vari tipi diversi.
+
+Nel caso del polimorfismo statico, MyDraw diventa una funzione template, in questo caso però la classe è specificata dal template.
+```c++
+template <typename T> void MyDraw(T const& obj) { 
+	obj.draw(); // chiamata alla funzione draw() della 
+				// classe specificata nel template 
+	}
+```
+<span style="color:#00b0f0">Quante funzioni MyDraw() esistono?</span>
+- Esistono 3 funzioni `MyDraw()`, in questo caso
+	- `MyDraw<Circle>(...)`
+	-  `MyDraw<Line>(...)`
+	- `MyDraw<Rectangle>(...)`
+<span style="color:#00b0f0">Perché compila?</span>
+- Perché esiste funzione draw per il template, vincola Rectangle ad implementare `draw()`
+
+**Polimorfismo tramite ereditarietà**:
+- Vincolato: l'interfaccia delle classi derivate è vincolata dalla classe base
+- Dinamico: binding effettuato a run-time (dinamicamente)
+
+**Polimorfismo tramite template**:
+- Svincolato (unbounded): l'interfaccia delle classi derivate non è predeterminata (non esiste il corrispondente di una classe base)
+- Statico: binding effettuato a tempo di compilazione (staticamente)
+
+## Altre forme di polimorfismo
+- Overloading di funzioni
+- Overloading di operatori
+
+### dynamic_cast
+- è utilizzato per "navigare" nella gerarchia di classi
+![[Pasted image 20231206150041.png]]
+
+### Upcasting
+- Upcasting è sempre lecito. Un oggetto di classe derivata è un (is a) oggetto di classe base
+- Non necessita di cast
+- Passo oggetto di classe derivata a oggetto che vorrebbe classe base
+
+```c++
+Base base; 
+
+Derived derived; 
+
+Base* pBase = &derived;
+```
+
+### Downcasting
+- Downcasting: effettuato con *dynamic_cast*
+- Funziona con i puntatori e con le reference 
+- Unico cast che effettua verifiche a run-time
+
+- Se il cast non è lecito: 
+	- Puntatori: ritorna nullptr 
+	- Reference: lancia un'eccezione (*bad_cast*)
+
+```c++
+Base base; 
+Derived derived; 
+
+Derived* pDerived = dynamic_cast<Derived*>(&base);
+```
