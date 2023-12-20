@@ -44,24 +44,19 @@ class Shape {
 	
 	virtual ~Shape() { } 
 	
-	// ... 
-	// continua..
-```
-
-```c++
-protected: ù
-	Shape() { } 
-	Shape(initializer_list<Point> lst); 
+	protected: 
+		Shape() { } 
+		Shape(initializer_list<Point> lst); 
 	
-	void draw_lines() const; // disegno 
-	void add(Point p); // aggiunge un punto 
-	void set_point(int i, Point p); // points[i] = p; 
+		void draw_lines() const; // disegno 
+		void add(Point p); // aggiunge un punto 
+		void set_point(int i, Point p); // points[i] = p; 
 	
-private: 
-	std::vector<Point> points; // non usato da tutte le 
-	Shape Color lcolor; // dalla libreria grafica 
-	Line_style ls; // dalla libreria grafica 
-	Color fcolor; // dalla libreria grafica 
+	private: 
+		std::vector<Point> points; // non usato da tutte le 
+		Shape Color lcolor; // dalla libreria grafica 
+		Line_style ls; // dalla libreria grafica 
+		Color fcolor; // dalla libreria grafica 
 };
 ```
 
@@ -87,7 +82,6 @@ La classe Circle è derivata di Shape, cosa eredita?
 - Private poco usato
 
 ### "is a"
-
 - Una relazione, esempio Circle è una Shape, cioè un oggetto di classe derivata è un (is a) oggetto di classe base.
 - Relazione non biunivoca
 
@@ -147,101 +141,60 @@ Con le gerarchie di classi utilizziamo tre meccanismi fondamentali
 ### Classe Shape
 ```c++
 class Shape
-
 {
-
 public:
-
     void draw() const;
-
     void move(int dx, int dy);
-
     Point point(int i) const;
-
     int number_of_points() const;
-
     Shape(const Shape &) = delete;
-
     Shape &operator=(const Shape &) = delete;
-
     ~Shape() {} // ...
 ```
 
 ```c++
 protected:
-
-Shape() {}
-
-Shape(initializer_list<Point> lst);
-
-void draw_lines() const;
-
-void add(Point p);
-
-void set_point(int i, Point p);
-
+	Shape() {}
+	Shape(initializer_list<Point> lst);
+	void draw_lines() const;
+	void add(Point p);
+	void set_point(int i, Point p);
   
-
 private:
-
-std::vector<Point> points;
-
-Color lcolor;
-
-Line_style ls;
-
-Color fcolor;
-
+	std::vector<Point> points;
+	Color lcolor;
+	Line_style ls;
+	Color fcolor;
 };
 ```
 
 ### Classe Shape (2)
 ```c++
 class Shape
-
 {
-
 public:
-
     void draw() const;
-
     virtual void move(int dx, int dy);
-
     Point point(int i) const;
-
     int number_of_points() const;
-
     Shape(const Shape &) = delete;
-
     Shape &operator=(const Shape &) = delete;
-
     virtual ~Shape() {} // ...
 ```
 
 ```c++
 protected:
-
-Shape() {}
-
-Shape(initializer_list<Point> lst);
-
-virtual void draw_lines() const;
-
-void add(Point p);
-
-void set_point(int i, Point p);
-
+	Shape() {}
+	Shape(initializer_list<Point> lst);
+	virtual void draw_lines() const;
+	void add(Point p);
+	void set_point(int i, Point p);
   
-
 private:
-
-std::vector<Point> points;
-
-Color lcolor;
-
-Line_style ls;
-
-Color fcolor;
+	std::vector<Point> points;
+	Color lcolor;
+	Line_style ls;
+	Color fcolor;
 
 };
 ```
@@ -293,35 +246,20 @@ Vediamo ora alcuni esempi di funzionamento
 
 ```c++
 class Base
-
-  
-
 {
-
-  
-
 public:
-
         virtual void f() const { cout << "Base::f "; }
         void g() const { cout << "Base::g "; } // non virtuale
-
 };
-
 class Derived : public Base
 {
 public:
-
     void f() const { cout << "Derived::f "; }
-
     void g() const { cout << "Derived::g "; }
 };
-
 class Derived2 : public Derived
-
 {
-
 public:
-
     void f() { cout << "Derived2::f "; } // nessun override: // non è const 
     void g() const { cout << "Derived2::g "; } 
 };
@@ -384,7 +322,28 @@ class Base
 
     virtual void f() const { cout << "Base::f "; }
 
-    void g() const { cout << "Base::g "; } // non virtuale }; class Derived : public Base { void f() const override { cout << "Derived::f "; } void g() const override { cout << "Derived::g "; } // errore }; class Derived2 : public Derived { void f() override { cout << "Derived2::f "; } // errore void g() const override { cout << "Derived2::g "; } // errore };
+    void g() const { cout << "Base::g "; } // non virtuale 
+}; 
+
+class Derived : public Base { 
+	void f() const override 
+	{ 
+		cout << "Derived::f "; 
+	} 
+	void g() const override 
+	{ 
+		cout << "Derived::g "; 
+	} // errore 
+}; 
+
+class Derived2 : public Derived { 
+	void f() override 
+	{ 
+		cout << "Derived2::f "; 
+	} // errore 
+
+	void g() const override { cout << "Derived2::g "; } // errore 
+};
 ```
 
 ### Funzioni virtuali pure
