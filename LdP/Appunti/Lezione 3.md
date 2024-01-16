@@ -1,7 +1,7 @@
 Reference:
 [[L03_1-Scope.pdf]]
 [[L03_2-Librerie.pdf]]
-[[L02_3_Dichiarazioni.pdf]]
+[[L03_3-Funzioni.pdf]]
 [[L03_4-Chiamate_funzioni.pdf]]
 # Scope e namespace
 
@@ -46,7 +46,7 @@ using namespace std;
 
 # Librerie e linking
 ### File header
-è un insieme di dichiarazioni di entità:
+È un insieme di dichiarazioni di entità:
 - Usabili da chi include il file header
 - Es. `math.h` dichiara `double sqrt (*double x)`
 
@@ -61,6 +61,32 @@ Gli header definiti dall'utente sono inclusi con le graffe
 #include "opencv2/core.h"
 ```
 
+Come compilare un progetto composto da molti file?
+- Preprocessore, compilatore, linker!
+![[Pasted image 20240116183250.png]]
+## Librerie statiche
+Quello che abbiamo appena visto è un linking statico (libreria statica)
+## Librerie dinamiche
+Una sola copia della libreria vale per tutti
+
+Vantaggi e svantaggi:
+**Librerie dinamiche**:
+- Riduzione dello spazio disco occupato (una sola copia funziona per tutti gli eseguibili)
+- Possono essere ricompilate senza toccare gli eseguibili
+- Chiamate .so (Shared Object) sotto Linux e .dll (Dynamic Linking Library) sotto Windows
+
+**Librerie statiche**
+- Generano eseguibili che non possono essere spezzati in seguito
+- Sono self-contained
+- Più adatte alla distribuzione di software monolitico
+
+## Come creare librerie statiche
+![[Pasted image 20240116183655.png]]
+
+## Come creare librerie dinamiche
+![[Pasted image 20240116183713.png]]
+
+---
 # Funzioni e reference, efficienza
 ### Passaggio per valore
 Passaggio di argomenti per valore, l'argomento viene inizializzato ad ogni chiamata. Si tratta di un valore copiato
@@ -119,3 +145,124 @@ void ggg(double x) {
 }
 
 ```
+
+
+# Chiamate a funzione e memory layout
+
+## Chiamata a funzione
+Una chiamata a funzione causa la creazione di una struttura dati chiamata **RA – Record di Attivazione (Function Activation Record)**
+
+La RA contiene:
+- una copia dei parametri
+- variabili locali
+
+ I RA sono impilati in una zona di memoria chiamata **stack**, una pila, con struttura LIFO (Last In First Out).
+
+La dimensione della RA dipende dal numero (e dal tipo) di variabili locali. Il tempo necessario per inserire il RA nello stack è costante.
+
+## Record di Attivazione | Struttura dati
+![[Pasted image 20240116202315.png]]
+- *Implementazione*: informazioni che servono per ritornare al chiamante e fornire un risultato (`return`)
+- Parametri e variabili locali sono equivalenti in questo schema
+- Ogni chiamata a f o g ha il proprio RA
+
+## Meccanismo di chiamata a funzione
+![[Pasted image 20240116202733.png]]
+In questo stack:
+1. Chiamo funzione f con f1 e f2
+	1. Esce f
+2. Chiamo funzione g con g1
+	1. esce g
+
+Casi più complessi possono avere anche RA "mischiati", in base a come vengono chiamate le funzioni, come in questo caso:
+![[Pasted image 20240116203020.png]]
+
+# Rappresentazione in memoria di un programma
+## Layout di memoria
+![[Pasted image 20240116203205.png]]
+
+### Text segment
+- AKA code segment / text
+- Copiato in memoria dal file oggetto
+- Contiene le istruzioni eseguibili
+- Spesso read-only
+- Spesso condiviso
+
+### Initialized data segment
+- AKA data segment
+- Contiene variabili globali e variabili statiche
+- Read/write - può contenere una parte read-only
+
+### Uninitialized data segment
+- AKA BSS segment (block started by symbol, per ragioni storiche)
+- Inizializzato a 0 dal SO
+- Contiene variabili globali e statiche non inizializzate esplicitamente
+```c++
+int glb_i; // in BSS 
+int main(void) { 
+	// … 
+	return 0; 
+}
+```
+
+### Stack
+- Contiene i RA delle funzioni, quindi le variabili locali e i parametri
+
+## Heap
+- Formalmente è spesso visto come uno spazio che cresce in verso opposto allo stack
+- La sua dimensione può essere modificata con le funzioni di sistema brk e sbrk
+- Può essere gestito usando blocchi di memoria non contigui (funzione di sistema mmap)
+- Gestito tramite `new` e `delete` (allocazione dinamica della memoria)
+
+# Ordine di valutazione di un programma
+La valutazione di un programma corrisponde alla sua esecuzione. Quando l’esecuzione raggiunge il codice che identifica la definizione di una variabile:
+1. La variabile viene «costruita»
+2. La memoria viene assegnata
+3. L’oggetto viene inizializzato
+
+Quando la variabile va out-of-scope
+- La memoria viene liberata e può essere utilizzata per altro
+
+## Valutazione delle variabili
+
+**Variabili globali**
+- Inizializzate prima della prima istruzione del main
+- Esistono fino al termine del programma
+
+**Variabili automatiche**
+- Di base, tutte le variabili locali sono automatiche
+- Esistono solo all’interno dello scope
+- Vengono ricreate ogni volta (es., se all’interno di una funzione)
+
+**Variabili statiche (static)**
+- Inizializzate solo la prima volta
+- Mantengono il valore anche al di fuori del loro scope
+- Possono essere globali o locali (se dichiarate dentro a una funzione)
+
+```c++
+#include <iostream>
+
+void f(void) {
+    int local_auto = 0;
+    static int local_static = 0;
+    std::cout << "Auto: " << local_auto++ << ", static: " << local_static++ << '\n';
+}
+
+int main(void) {
+    f(); // "Auto: 1, static: 1"
+    f(); // "Auto: 1, static: 2"
+    f(); // "Auto: 1, static: 3"
+
+    return 0;
+}
+
+```
+
+- I compilatori fanno sì che il codice si comporti come se le azioni descritte prima fossero eseguite
+- Varie ottimizzazioni sono possibili
+- I compilatori spesso modificano l'implementazione per ottimizzare, ma il comportamento è immutato
+
+**Inizializzazione globale**
+- Le variabili globali sono inizializzate prima dell'esecuzione della prima istruzione del main
+- Se le variabili di diverse translation unit hanno una dipendenza, non sappiamo in che ordine sono effettuate le inizializzazioni
+- Variabili globali hanno la memoria scritta a 0 prima delle inizializzazioni
