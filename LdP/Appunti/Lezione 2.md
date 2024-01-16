@@ -1,4 +1,4 @@
-# 2.1 Variabili e type safety
+# Variabili e type safety
 
 ### Tipo, oggetto, variabile, valore
 - Il **tipo** definisce il tipo del contenuto, un range di valori e un insieme di operazioni per un oggetto
@@ -83,7 +83,7 @@ Meglio scegliere una convenzione e rispettarla, perché rende molto più semplic
 https://google.github.io/styleguide/cppguide.html#Naming
 
 
-# 2 .2 Espressioni e operatori
+# Espressioni e operatori
 
 ## Computazione
 Il programmatore deve esprimere la computazione in modo
@@ -164,7 +164,7 @@ L'ordine di valutazione delle espressioni non è definito, quindi è sbagliato u
 	- Sono sensibili al tipo
 - In sostanza se la variabile richiesta è `int` non posso mettere una stringa, o meglio se succede prende ogni lettera della stringa e la converte in intero.
 
-# 2 .3 Istruzioni, dichiarazioni, definizioni
+# Istruzioni, dichiarazioni, definizioni
 ## Statements
 
 Lo statement o istruzione è una parte di codice C++ che specifica un'azione, che termina con ;. Non sono istruzioni le direttive del preprocessore.

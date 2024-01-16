@@ -12,7 +12,7 @@
 Due famiglie di eccezioni
 - **std::logic_error**: riporta un errore che consegue una logica difettata come la violazione di pre-condizioni o gli invarianti della classe
 - **std::runtime_error**: riporta errori dovuti a eventi esterni al programma stesso che sono difficilmente prevedibili
-![[Pasted image 20231220144402.png]]
+![[Pasted image 20240116133357.png]]
 
 ### Classe Exception
 ```c++

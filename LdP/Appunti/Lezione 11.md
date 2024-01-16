@@ -64,7 +64,7 @@ Nel caso di std:: vector, gli elementi sono consecutivi in memoria
 Dall’element 0 all’elemento size-1
 La nozione STL di sequenza non prevede che gli elementi siano consecutivi 
 La struttura dati più vicina a una sequenza STL è:
-![[Pasted image 20231206152936.png]]
+![[Pasted image 20240116133019.png]]
 
 ```c++
 template<typename Elem> struct Link { 
@@ -210,13 +210,13 @@ std::vector<int>::iterator p = v.begin(); // puntatore al primo // elemento del 
 ++p; ++p; ++p; // puntatore al quarto // elemento 
 auto q = p; ++q; // puntatore al quinto // elemento
 ```
-![[Pasted image 20231206155647.png]]
+![[Pasted image 20240116133114.png]]
 
 ```c++
 p = v.insert(p, 99);
 ```
 
-![[Pasted image 20231206155724.png]]
+![[Pasted image 20240116133128.png]]
 
 <span style="color:#00b0f0">Si ripropone lo stesso problema con le liste? Perché?</span>
 No, non si ripropone lo stesso problema, la lista incrementa il numero di elementi, il puntatore rimane sempre sullo stesso luogo in memoria, non sposto nulla.

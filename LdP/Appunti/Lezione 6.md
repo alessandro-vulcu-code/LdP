@@ -92,8 +92,12 @@ Ricordiamo che:
 
 ### Range e range check
 A questo livello non esiste controllo sui range!
-![[Pasted image 20231126172855.png]]
-
+![[Pasted image 20240116132553.png]]
+```c++
+pd[2] = 2.2; // ok! 
+pd[4] = 4.4; // ok! 
+pd[-3] = -3.3; // ok, ma...
+```
 - Grave problema
 - Esecuzioni diverse possono dare sintomi diversi
 - Bug molto difficili da gestire!
@@ -171,12 +175,356 @@ double* q = new double[1000];
 
 q = p; // attenzione!!
 ```
-
-![[Pasted image 20231126173739.png]]
+![[Pasted image 20240116132711.png]]
 
 ### Garbage
 - Un'area di memoria di cui si perdono i riferimenti diventa garbage
 - Tale zona di memoria rimane allocata ma è irraggiungibile e inservibile
 - Questo fenomeno è noto come **memory leak**
 	- Può portare all'esaurimento di memoria
+
 ---
+
+# Liberare la memoria
+
+È importante liberare la memoria quando non serve più, perché in C++ non lo fa nessuno al posto nostro. 
+La produzione di garbage è un **errore tecnico grave**
+La gestione corretta della memoria dinamica include la liberazione della memoria
+
+La memoria va liberata manualmente per due motivi:
+- *Efficienza*: il garbage collector impiega molte risorse, deve capire quale memoria è ancora raggiungibile
+- *Controllo*: decidiamo quando la memoria è rilasciata, perciò di nuovo disponibile per altro
+
+Per liberare la memoria si usano istruzioni dedicate:
+- `delete`: se la memoria è allocata con `new`
+- `delete[]`: se la memoria è allocata con `new[]`
+Entrambi si applicano ai puntatori.
+
+## Passaggio di memoria tra funzioni
+Con l'allocazione dinamica della memoria possiamo creare un oggetto in uno scope (es., funzione) e passarlo a un altro scope (es., il chiamante).
+In questo caso:
+
+```c++
+double *calc(int res_size, int max)
+{
+	double *p = new double[max];
+	double *res = new double[res_size];
+	delete[] p;
+	return res;
+}	// ... 
+double *r = calc(100, 1000);	
+// ... 
+delete[] r;
+```
+calc() alloca res e lo ritorna al chiamante. È copiato solo il puntatore, la memoria allocata rimane tale quale.
+
+Esempio visivo:
+![[Pasted image 20240116084000.png]]
+![[Pasted image 20240116084014.png]]
+
+## Deallocazione nel chiamante
+
+```c++
+vector* f(int s)
+{
+	vector *p = new vector(s);	// fill p 
+	return p;
+}
+
+void pf()
+{
+	vector *q = f(4);	// use q 
+	delete q; //deallocazione del chiamante
+}
+```
+
+## Doppia cancellazione
+È un errore grave deallocare due volte la memoria
+```c++
+int *p = new int{5};
+delete p;
+	// ... – ma nessun uso di p delete p;
+delete p;
+```
+- p non è più a nostra disposizione
+- Il proprietario è il free store manager
+- Potrebbe esserci un altro oggetto
+
+## Dangling pointer
+Dopo il delete, il puntatore mantiene lo stesso valore. Tale valore non è più valido ed è un errore utilizzarlo. Questa situazione prende il nome di **dangling pointer**
+
+Per evitare il dangling pointer è opportuno settare il puntatore a nullptr.
+
+## Liberare la memoria con UDT
+
+```c++
+class vector
+{
+	int sz;
+	double *elem;
+	public: vector(int s): sz{s}, elem{new double[s]}
+	{
+		for (int i = 0; i < s; ++i) elem[i] = 0;
+	}
+		// ... 
+};
+
+```
+- A fine vita, è necessario deallocare la memoria
+- Come possiamo fare per essere sicuri che ciò avvenga in maniera automatica?
+	- Potrei usare una funzione clean_up(), ma se l'utente non la chiamasse?
+
+## Distruttore
+Un distruttore è una funzione che il compilatore chiama quando un oggetto deve essere distrutto, per esempio se:
+- Esce dallo scope
+- C'è deallocazione di un oggetto
+Viene chiamato **implicitamente**
+
+### Distruttore di Vector
+```c++
+class vector {
+  int sz;
+  double* elem;
+
+ public:
+  vector(int s) : sz{s}, elem{new double[s]} {
+    for (int i = 0; i < s; ++i) elem[i] = 0;
+  }
+  ~vector() { delete[] elem; }  //distruttore!
+  // ...
+};
+```
+Chiamata implicita del distruttore
+```c++
+void f3(int n) {
+  double* p = new double[n];
+  vector v(n);  // ... uso p e v ...
+  delete[] p;
+}
+```
+In questo caso v è liberato automaticamente
+
+I distruttori sono molto utili quando dobbiamo rilasciare risorse acquisite, come *File, Thread, Lock, Stream*.
+
+## Distruttori creati dal compilatore
+Quando il distruttore non è scritto esplicitamente, è generato automaticamente dal compilatore (**compiler-generated destructor**)
+- Non è "intelligente": non dealloca al posto nostro
+- Chiama i distruttori di eventuali oggetti membro
+Tipi standard hanno il loro costruttore e viene chiamato dal compilatore
+
+## Pattern acquisizione risorse
+- Un oggetto acquisisce risorse nel costruttore
+- Durante la sua vita, l'oggetto può:
+	- Acquisire altre risorse
+	- Liberare alcune risorse
+- A fine vita, l'oggetto rilascia tutte le risorse
+
+--- 
+# Liste
+Struttura dati con caratteristiche specifiche
+- Accesso seriale
+- Le operazioni di aggiunta e rimozione di un nodo sono veloci
+- Utilizzo dell'allocazione dinamica
+![[Pasted image 20240116111137.png]]
+
+- Una lista è fatta di «link» che possiedono informazioni sul dato e puntatori ad altri link
+- Una lista double-linked ha puntatori ai link precedente e successivo
+
+```c++
+struct Link {
+  std::string value;
+  Link* prev;
+  Link* succ;
+  Link(const std::string& v, Link* p = nullptr, Link* s = nullptr)
+      : value{v}, prev{p}, succ{s} {}
+};
+```
+Per accedere a un membro di Link, useremo l'operatore:
+- Equivale a `(*…).xxxx`
+- `(*p).field` equivale a` p->field
+
+Per costruire la lista:
+```c++
+Link* norse_gods = new Link{"Thor", nullptr, nullptr};
+norse_gods = new Link{"Odin", nullptr, norse_gods};
+norse_gods->succ->prev = norse_gods;
+norse_gods = new Link{"Freia", null_ptr, norse_gods};
+norse_gods->succ->prev = norse_gods;
+```
+
+## Funzione insert
+- L'inserimento è un'operazione molto comune!
+- Ha senso usare una funzione dedicata
+```c++
+Link* insert(Link* p, Link* n) {  // inserisce n prima di p
+  n->succ = p;
+  p->prev->succ = n;
+  n->prev = p->prev;
+  p->prev = n;
+  return n;
+}
+```
+Vincolo: questa funziona se p punta a un Link, e se questo ha un prev!
+
+## Funzione insert con check per nullptr
+
+```c++
+Link* insert(Link* p, Link* n) {  // inserisce n prima di p
+  if (!n) return p;
+  if (!p) return n;
+  n->succ = p;
+  if (p->prev) p->prev->succ = n;
+  n->prev = p->prev;
+  p->prev = n;
+  return n;
+}
+```
+Inserire i link ora è più semplice:
+```c++
+Link* norse_gods = new Link{"Thor"}; 
+norse_gods = insert(norse_gods, new Link{"Odin"}); 
+norse_gods = insert(norse_gods, new Link{"Freia"});
+```
+La gestione dei puntatori è nascosta!
+
+## Operazioni su liste
+Funzioni utili per la gestione di una lista:
+- **Costruttore**
+- **insert**: inserimento prima di un elemento
+- **add**: inserimento dopo un elemento
+- **erase**: rimozione di un elemento
+- **find**: trova un Link con un certo valore
+- **advance**: trova l'n-simo successivo
+
+## Operazioni su liste
+
+```c++
+Link* add(Link* p, Link* n){...}  // esercizio
+Link* erase(Link* p) {
+  if (!p) return nullptr;
+  if (p->succ) p->succ->prev = p->prev;
+  if (p->prev) p->prev->succ = p->succ;
+  return p->succ;
+  // attenzione: ritorna un puntatore ma
+  // non dealloca!
+}
+```
+
+```c++
+Link* find(Link* p, const string& s) {
+  while (p) {
+    if (p->value == s) return p;
+    p = p->succ;  // anziché ++p
+  }
+  return nullptr;
+}
+```
+
+```c++
+Link* advance(Link* p, int n) {
+  if (!p) return nullptr;
+  if (0 < n) {
+    while (n--) {
+      if (!p->succ) return nullptr;
+      p = p->succ;
+    }
+  } else if (n < 0) {
+    while (n++) {
+      if (!p->prev) return nullptr;
+      p = p->prev;
+    }
+  }
+  return p;
+}
+```
+
+Ora posso usare le liste cos:
+```c++
+Link* norse_gods = new Link{"Thor"};
+norse_gods = insert(norse_gods, new Link{"Odin"});
+norse_gods = insert(norse_gods, new Link{"Zeus"});
+norse_gods = insert(norse_gods, new Link{"Freia"});
+Link* greek_gods = new Link{"Hera"}; greek_gods = insert(greek_gods, new Link{"Mars"}; greek_gods = insert(greek_gods, new Link{"Poseidon"};
+```
+
+## Modifica di liste
+```c++
+Link* p = find(norse_gods, "Zeus");
+if (p) {
+  erase(p);
+  insert(greek_gods, p);
+}
+```
+Funziona, ma ha due problemi:
+- Cosa succede se p è `norse_gods`?
+- `greek_gods` non è aggiornato
+
+```c++
+Link* p = find(norse_gods, "Zeus");
+if (p) {
+  if (p == norse_gods) norse_gods = p->succ;
+  erase(p);
+  greek_gods = insert(greek_gods, p);
+}
+```
+
+## Stampa di liste
+
+```c++
+void print_all(Link* p) {
+  cout << "{";
+  while (p) {
+    cout << p->value;
+    if (p = p->succ) cout << ", ";
+  }
+  cout << "]";
+}
+print_all(norse_gods);
+cout << "\n";
+print_all(greek_gods);
+```
+
+# Puntatore this
+## Migrazione a funzioni membro?
+Molte delle funzioni viste prima accettano un Link* come argomento
+- Ha senso che diventino funzioni membro?
+- Sì, e ciò nasconde all'esterno l'uso dei puntatori
+Nuova versione della classe
+
+```c++
+class Link {
+public:
+    string value;  // public: sono solo dati
+
+    Link(const string& v, Link* p = nullptr, Link* n = nullptr) : value{v}, prev{p}, succ{n} {}
+
+    Link* insert(Link* n);  // Inserimento prima di questo
+    Link* add(Link* n);     // Inserimento dopo questo
+    Link* erase();          // Rimuove questo
+    Link* find(const string& s);
+    const Link* find(const string& s) const;
+    Link* advance(int n) const;
+
+    Link* next() const { return succ; }
+    Link* previous() const { return prev; }
+
+private:
+    Link* prev;
+    Link* succ;
+};
+```
+
+## Inserimento prima di questo oggetto
+Se devo inserire prima di questo oggetto, ho bisogno di un riferimento
+- **this** è un puntatore a questo oggetto
+```c++
+Link* Link::insert(Link* n) {
+  Link* p = this;  // posso anche lasciare this
+  if (n == nullptr) return p;
+  n->succ = p;
+  if (p->prev) p->prev->succ = n;
+  n->prev = p->prev;
+  p->prev = n;
+  return n;
+}
+```

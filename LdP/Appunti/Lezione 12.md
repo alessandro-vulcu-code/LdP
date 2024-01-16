@@ -218,9 +218,18 @@ Lambda è poco immediato.
 ![[Pasted image 20231219133734.png]]
 
 ### copy()
-- Effettua una copia ☺ (NO WAY)
+- Effettua una copia 
 ```c++
-template<typename In, typename Out> // In: iteratore di input // Out: iteratore di output Out copy(In first, In last, Out res) { while(first != last) { *res = *first; ++res; ++first; } return res; }
+template<typename In, typename Out>
+Out copy(In first, In last, Out res) {
+    while (first != last) {
+        *res = *first;
+        ++res;
+        ++first;
+    }
+    return res;
+}
+
 ```
 
 - Copia di una sequenza in un'altra sequenza
@@ -232,19 +241,26 @@ Utilizzo:
 - **Sorgente**: segnalati a inizio e fine
 - **Destinazione**: segnalato solo l'inizio
 ```c++
-void f(vector<double>& vd, list<int>& li) { if(vd.size() < li.size()) error("Target container too small\n"); copy(li.begin(), li.end(), vd.begin()); }
+void f(vector<double>& vd, list<int>& li) {
+  if (vd.size() < li.size()) error("Target container too small\n");
+  copy(li.begin(), li.end(), vd.begin());
+}
 ```
 
 Esiste anche la copia con verifica di un predicato, stessa sintassi, con un quarto argomento che specifica il predicato
 ```c++
-void f(const vector<int>& v) { vector<int> v2(v.size()); copy_if(v.begin(), v.end(), v2.begin(), Larger_than(6)); }
+void f(const vector<int>& v) {
+  vector<int> v2(v.size());
+  copy_if(v.begin(), v.end(), v2.begin(), Larger_than(6));
+}
+
 ```
 
 Algoritmi numerici 
-- Accumulate 
-- Inner_product 
-- Partial_sum 
-- Adjacent_difference
+- `Accumulate` 
+- `Inner_product` 
+- `Partial_sum` 
+- `Adjacent_difference`
 
 ---
 

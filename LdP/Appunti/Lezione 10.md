@@ -1,5 +1,29 @@
 # Ereditarietà
 
+```c++
+void Playground::print_playground() {
+    std::cout << " \t 1 \t 2 \t 3 \t 4 \t 5 \t 6 \t 7 \t 8 " << std::endl << "A\t";
+
+    std::string spaces = "\t   \t   \t   \t   \t   \t   \t";
+
+    for (int i = 0; i < 8; i++) {
+        std::cout << playground.at(i) << "\t";
+    }
+
+    std::cout << std::endl;
+
+    char riga = 'B';
+    for (int i = 0; i < 6; i++) {
+        std::cout << riga++ << "\t" << playground.at(playground.size() - 1 - i) << spaces << playground.at(8 + i) << std::endl;
+    }
+
+    std::cout << "H\t";
+    for (int i = 21; i >= 14; i--) {
+        std::cout << playground.at(i) << "\t";
+    }
+}
+
+```
 Vogliamo descrivere entità geometriche:
 - Punti 
 - Forme
@@ -316,34 +340,38 @@ Alcune funzioni sono progettate per fare l'overriding
 Usalo per debuggare che è molto utile
 
 ```c++
+#include <iostream>
+using namespace std;
+
 class Base
-
 {
-
-    virtual void f() const { cout << "Base::f "; }
-
-    void g() const { cout << "Base::g "; } // non virtuale 
-}; 
-
-class Derived : public Base { 
-	void f() const override 
-	{ 
-		cout << "Derived::f "; 
-	} 
-	void g() const override 
-	{ 
-		cout << "Derived::g "; 
-	} // errore 
-}; 
-
-class Derived2 : public Derived { 
-	void f() override 
-	{ 
-		cout << "Derived2::f "; 
-	} // errore 
-
-	void g() const override { cout << "Derived2::g "; } // errore 
+    virtual void f() const { cout << "Base::f "; }
+    void g() const { cout << "Base::g "; } // non virtuale
 };
+
+class Derived : public Base
+{
+    void f() const override
+    {
+        cout << "Derived::f ";
+    }
+
+    void g() const override
+    {
+        cout << "Derived::g "; // errore
+    }
+};
+
+class Derived2 : public Derived
+{
+    void f() override
+    {
+        cout << "Derived2::f "; // errore
+    }
+
+    void g() const override { cout << "Derived2::g "; } // errore
+};
+
 ```
 
 ### Funzioni virtuali pure
@@ -375,26 +403,16 @@ Perché creare una funzione virtuale pura?
 class Shape
 {
 public:
-
-    Shape() {}
-
-    Shape(initializer_list<Point> lst);
-
-    void draw() const;
-
-    virtual void move(int dx, int dy) = 0;
-
-    Point point(int i) const;
-
-    int number_of_points() const;
-
-    Shape(const Shape &) = delete;
-
-    Shape &operator=(const Shape &) = delete;
-
-    virtual ~Shape() {} 
-    
-    // ...
+    Shape() {}
+    Shape(std::initializer_list<Point> lst);
+    void draw() const;
+    virtual void move(int dx, int dy) = 0;
+    Point point(int i) const;
+    int number_of_points() const;
+    Shape(const Shape &) = delete;
+    Shape &operator=(const Shape &) = delete;
+    virtual ~Shape() {}
+    // ...
 ```
 
 ```c++
