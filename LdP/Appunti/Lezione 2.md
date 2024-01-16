@@ -1,3 +1,8 @@
+Reference:
+[[L02_1_Variabili.pdf]]
+[[L02_2_Espressioni_e_operatori.pdf]]
+[[L02_3_Dichiarazioni.pdf]]
+
 # Variabili e type safety
 
 ### Tipo, oggetto, variabile, valore

@@ -1,3 +1,9 @@
+Reference:
+[[L12_1-Algoritmi_STL-intro_e_ricerca.pdf]]
+[[L11_2-STL_Linked_list_iteratori.pdf]]
+[[L12_3-Algoritmi_STL-lambda_sort_copy.pdf]]
+[[L12_3-Algoritmi_STL-lambda_sort_copy.pdf]]
+[[L12_4-Algoritmi_STL-associative_container.pdf]]
 # Algoritmi STL – Introduzione e algoritmi di ricerca
 - STL offre un grande numero di algoritmi 
 - Algoritmi compatibili con tutti i container STL
@@ -7,10 +13,10 @@
 
 ---
 
-### Find ()
+### Find()
 - Parametro template
 - Cerca un elemento con un dato valore in una sequenza
-- Implementazione efficente e veloce
+- Implementazione efficiente e veloce
 
 ```c++
 template<typename In, typename T> 
@@ -22,7 +28,7 @@ In find(In first, In last, const T& val) {
 }
 ```
 
-- La sequenza su cui opera find () è definita mediante due iteratori 
+- La sequenza su cui opera` find()` è definita mediante due iteratori 
 	- `[first, last)` -> last è l'ultimo elemento non compreso, quindi sappiamo che non abbiamo trovato nulla se ci arriviamo
 - `find()` è generico
 - La chiamata a `find()` non cambia in funzione di questi due elementi
@@ -36,9 +42,9 @@ Esempio con differenze:
 
 ## Algoritmi con predicati
 
-## find_if ()
-- Find () confronta valori
-- Find_if () verifica che un criterio sia soddisfatto
+## find_if()
+- `find()` confronta valori
+- `find_if()` verifica che un criterio sia soddisfatto
 
 ```c++
 template<typename In, typename Pred> 
@@ -92,7 +98,6 @@ while(first != last && !pred(*first)) ++first;
 ```
 
 - È tradotta in una chiamata a `operator()`
-
 - La funzione brutta di merda di prima diventa:
 
 ```c++
@@ -110,7 +115,7 @@ void f(list<double>& v, int x) {
 #### Funzionamento
 - Function object creato nell'argomento
 - Argomento passato a `find_if()`
-- `Find_if()`, al suo interno, chiama `operator()`
+- `find_if()`, al suo interno, chiama `operator()`
 
 - Usare i function object è una tecnica efficiente
 - Per una migliore efficienza:
@@ -133,7 +138,7 @@ Debolezza dei function object
 	- Crearne uno immediatamente e usarlo come argomento di una funzione
 	- Tale function object è anonimo e non utilizzabile altrove
 
-### Sort () e lambda expression
+### Sort() e lambda expression
 
 #### Sort()
 - Effettua un ordinamento
@@ -176,7 +181,16 @@ struct Record{
 - Dato un vector di record
 - Abbiamo due modi di ordinarlo – in base a due diversi predicati:
 ```c++
-struct Cmp_by_name{ bool operator()(const Record& a, const Record&b) const { return a.name < b.name; } }; struct Cmp_by_addr{ bool operator()(const Record& a, const Record&b) const { return strncmp(a.addr, b.addr, 24) < 0; } }; 
+struct Cmp_by_name {
+  bool operator()(const Record& a, const Record& b) const {
+    return a.name < b.name;
+  }
+};
+struct Cmp_by_addr {
+  bool operator()(const Record& a, const Record& b) const {
+    return strncmp(a.addr, b.addr, 24) < 0;
+  }
+};
 ```
 
 - Esistono due criteri di ordinamento perché sono presenti due dati membro
@@ -300,13 +314,13 @@ int main() {
 - Associazione esplicita di una chiave a un valore
 
 ### Set
-- Un set è una map senza i valori
-- Viene meno la ricerca del valore a partire dalla chiave
-	- Non è disponibile `operator[]`
-	- Non è disponibile `push_back()` – è il set che decide dove inserire l'elemento
-	- Gestito tramite le operazioni tipiche delle liste -> `insert() ed erase()`
-	- Set è un contenitore ordinato
-	- Deve essere definita una funzione d'ordine per ciascun tipo contenuto
+Un set è una map senza i valori
+Viene meno la ricerca del valore a partire dalla chiave
+- Non è disponibile `operator[]`
+- Non è disponibile `push_back()` – è il set che decide dove inserire l'elemento
+- Gestito tramite le operazioni tipiche delle liste -> `insert() ed erase()`
+- Set è un contenitore ordinato
+- Deve essere definita una funzione d'ordine per ciascun tipo contenuto
 
 #### Esempio
 ```c++

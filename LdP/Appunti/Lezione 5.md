@@ -1,3 +1,7 @@
+Reference:
+[[L05.1 - Puntatori e gestione della memoria.pdf]]
+[[L05.2 - Puntatori, references e cast.pdf]]
+[[L05.3 - Array e artimetica dei puntatori.pdf]]
 # Gestione della memoria e puntatori
 
 La gestione della memoria è spesso considerata un compito di basso livello, spesso affidato alle librerie. 

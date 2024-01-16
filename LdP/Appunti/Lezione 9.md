@@ -1,3 +1,7 @@
+Reference:
+[[L09_1-Template.pdf]]
+[[L09_2-Polimorfismo.pdf]]
+[[L09_3-Template_e_header.pdf]]
 # Template
 Vediamo cosa sono i template. Scriverne uno non è sempre facile.
 Si tratta di un meccanismo che consente al programmatore di usare un tipo come parametro per una classe o una funzione.

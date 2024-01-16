@@ -1,4 +1,8 @@
-### Stato di una classe
+[[L04.1 - Introduzione alle classe.pdf]]
+[[L04.2 - La classe Date.pdf]]
+[[L04.3 - Overloading degli operatori.pdf]]
+[[L04.4 - Esempio di overloading.pdf]]
+# Stato di una classe
 Esempio di una macchina del caffè. Lo stato di una macchina del caffè può essere:
 - Acceso-spento
 - Idle/not-idle
@@ -24,7 +28,7 @@ Una classe specifica per ogni tipo:
 - Come può essere usata
 - Come può essere distrutta
 
-## Classi
+# Classi
 Una classe può essere composta da:
 - Tipi built in
 - Altre classi
@@ -43,7 +47,7 @@ Data member e function member
 		- Lettura e scrittura avvengono solo tramite interfaccia
 - Di default, _i membri di una classe sono privati_
 
-#### Public - Private
+## Public - Private
 ```c
 class X { 
 	public: 
@@ -60,7 +64,7 @@ class X {
 };
 ```
 
-### Struct
+## Struct
 - Varianti delle classi
 - Unica differenza: i membri di default sono pubblici
 - Usate quando ci sono dati ma non funzioni

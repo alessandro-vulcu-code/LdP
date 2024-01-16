@@ -1,3 +1,7 @@
+Reference:
+[[L08.1 - Progetti complessi.pdf]]
+[[L08.2 - CMake.pdf]]
+[[L08.3-Git_introduzione.pdf]]
 ## Progetti su file multipli
 Meglio organizzare il software in più file:
 - Organizzazione migliore

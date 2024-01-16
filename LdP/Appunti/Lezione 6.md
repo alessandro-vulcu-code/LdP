@@ -1,3 +1,7 @@
+Reference:
+[[L06.1 - Allocazione dinamica della memoria.pdf]]
+[[L06.2 - Liberare la memoria.pdf]]
+[[L06_3-Liste.pdf]]
 # Allocare la memoria usando il free store 
 ## Creare una classe std::vector
 ### Std ::vector

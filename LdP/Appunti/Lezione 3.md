@@ -1,3 +1,8 @@
+Reference:
+[[L03_1-Scope.pdf]]
+[[L03_2-Librerie.pdf]]
+[[L02_3_Dichiarazioni.pdf]]
+[[L03_4-Chiamate_funzioni.pdf]]
 # Scope e namespace
 
 ### Definizione di scope

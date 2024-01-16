@@ -1,3 +1,8 @@
+Reference:
+[[L11_1-STL_intro_iteratori.pdf]]
+[[L11_2-STL_Linked_list_iteratori.pdf]]
+[[L11_3-STL_vector_list_string.pdf]]
+
 # Standard Template Library (STL)
 
 Parte di libreria standard che riguarda i template, ad esempio poter dichiarare vari tipi di vettori. 
@@ -5,14 +10,14 @@ Per gestire sequenze di dati possono esserci numerose operazioni.
 
 La **Standard Template Library** è una parte della libreria standard che fornisce:
 - Contenitori
-	- std::vector
-	- std::list
-	- Std::map
+	- `std::vector`
+	- `std::list`
+	- `std::map`
 
 - Algoritmi generici
-	- std:: sort 
-	- std:: find 
-	- std::accumulate
+	- `std:: sort` 
+	- `std:: find` 
+	- `std::accumulate`
 Differenzia struttura dati dall'algoritmo
 
 STL ha vari tipi di contenitori, ma hanno accesso unificato cioè la modifica del tipo di un contenitore non ha impatto sull'algoritmo.
@@ -29,7 +34,7 @@ L'iteratore ricorda un puntatore, concettualmente
 
 Un iteratore punta a un elemento della sequenza.
 È possibile confrontare due iteratori con operatori: == e !=.
-È possibile riferirsi agli oggetti puntati usando l'operatore unario * (dereference)
+È possibile riferirsi agli oggetti puntati usando l'operatore unario * (*dereference*)
 È possibile ottenere l'elemento successivo usando ++.
 
 Grazie agli iteratori abbiamo una *sequenza standard*, grazie all'interfaccia fornita da STL.
@@ -57,7 +62,7 @@ Iterator high(Iterator first, Iterator last) {
 
 ---
 
-# linked list e il suo iteratore
+# Linked list e il suo iteratore
 
 ## std:: vector come sequenza
 Nel caso di std:: vector, gli elementi sono consecutivi in memoria 

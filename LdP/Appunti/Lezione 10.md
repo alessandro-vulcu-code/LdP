@@ -1,3 +1,8 @@
+Reference:
+[[L10_1-Ereditarieta.pdf]]
+[[L10_1-Ereditarieta.pdf]]
+[[L10_3-Ereditarieta_layout_memoria.pdf]]
+[[L10_4-Recap_polimorfismo.pdf]]
 # Ereditarietà
 
 ```c++

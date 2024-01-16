@@ -1,3 +1,7 @@
+Reference:
+[[L13_1-Standard_exceptions.pdf]]
+[[L13_2-Risorse_eccezioni.pdf]]
+[[L13_3-Smart_pointer.pdf]]
 # Eccezioni
 - Accertarsi che il dato immesso sia corretto
 - Posso creare ad esempio la mia classe `Invalid()`

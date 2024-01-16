@@ -1,3 +1,10 @@
+Reference:
+[[L07.1 - Inizializzazione di oggetti.pdf]]
+[[L07.2 - Copia di oggetti.pdf]]
+[[L07.3 - Puntatore this.pdf]]
+[[L07.4 - Spostamento di oggetti.pdf]]
+[[L07.5 - Accesso alle classi.pdf]]
+[[L07.6 - Recap sulle classi.pdf]]
 # Inizializzazione di oggetti
 
 ## Da basso ad alto livello (recap)
