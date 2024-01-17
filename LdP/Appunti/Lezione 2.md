@@ -114,18 +114,15 @@ Interfaccia: definizione di come usare una risorsa o una funzione
 - Possono essere espressioni i Literal o i nomi delle variabili. Più espressioni semplici insieme ne creano di più complesse
 
 ### Lvalue e rvalue
-Lvalue è ciò che sta alla sinistra di un operatore di assegnamento.
-Il nome di una variabile NON è sempre lvalue. In questo codice: 
-```c++
-int length; 
-length = 99;
-length /= 2; 
-int width; 
-width = length * 2;
+In programmazione, un "lvalue" è un'espressione che rappresenta un oggetto situato in una posizione di memoria identificabile, mentre un "rvalue" è un'espressione il cui valore può essere utilizzato come valore di un'espressione, ma che potrebbe non avere una posizione di memoria ben definita.
+
+```cpp
+int x = 42; // 'x' è un lvalue perché ha una posizione di memoria identificabile.
+
+int y = x + 5; // 'x + 5' è un rvalue, poiché rappresenta solo il valore risultante dell'operazione, non una posizione di memoria specifica.
 ```
-Length si riferisce: 
-- Come lvalue: a un oggetto di tipo int che contiene il valore 99 – length è il box (l'oggetto) 
-- Come rvalue: il riferimento al valore contenuto nell'oggetto
+
+Nell'esempio, `x` è un lvalue perché ha una posizione di memoria, mentre `x + 5` è un rvalue perché rappresenta solo il valore risultante dell'operazione senza una posizione di memoria specifica.
 
 Ci sono espressioni costanti, C++ permette di esprimere una costante simbolica. Sono meglio dei Magic Numbers, quindi vanno usate sennò in laboratorio viene contato come errore.
 
