@@ -430,6 +430,10 @@ int* p = f();
 *p = 15; // a cosa punta?
 ```
 
+La funzione `f()` restituisce un puntatore a un'int variabile locale `x`. Tuttavia, dopo che la funzione è terminata, la variabile `x` esce dallo scope e la sua memoria potrebbe essere sovrascritta da altre chiamate di funzione o operazioni. Quindi, dopo la chiamata `f()`, il puntatore `p` potrebbe puntare a un'area di memoria che potrebbe non contenere più il valore originale di `x`.
+
+In breve, dopo `*p = 15;`, il comportamento è indefinito, poiché si sta cercando di modificare un'area di memoria che potrebbe non appartenere più alla variabile `x` originale.
+
 - Un caso logicamente analogo
 ```c++
 std::vector& ff() 
