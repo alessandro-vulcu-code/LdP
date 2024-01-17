@@ -1,3 +1,7 @@
+---
+cards-deck: remote::LdP::Appunti
+---
+
 [[L04.1 - Introduzione alle classe.pdf]]
 [[L04.2 - La classe Date.pdf]]
 [[L04.3 - Overloading degli operatori.pdf]]
@@ -90,8 +94,9 @@ In C++ posso programmare ad oggetti con una serie di potenti strumenti, come:
 - (Helper function)
 
 ---
-# La classe Date
+# La classe Date 
 Vediamo ora un esempio di classe, in particolare creeremo la **classe Date** per rappresentare e manipolare le date.
+
 
 Iniziamo da una struttura semplice: una classe date rappresenta "un giorno nel passato, presente o futuro". 
 
@@ -137,7 +142,7 @@ return 0;
 Le helper function da sole non sono tutto. Sono a disposizione dell'utente, ma potrebbero non essere usate. Pertanto è necessario uno step in più: il _costruttore_ di una classe.
 
 ### Costruttore e funzioni membro
-- Il costruttore è una funzione membro che ha lo stesso nome della classe $\rightarrow$ inizializza gli oggetti della classe
+- Il costruttore è una ==funzione membro== che ha lo stesso nome della classe $\rightarrow$ inizializza gli oggetti della classe
 - Se esiste un solo costruttore con argomenti $\rightarrow$ non fornirli è _errore_
 
 ```c++
@@ -266,6 +271,7 @@ enum class Month {
 
 - Enum class crea uno scope 
 	- Jan è specificato come Month:: jan 
+^1705503521102
 - È possibile scegliere valori specifici 
 	- In caso contrario: valore del precedente + 1 
 	- Parte da 0 • 

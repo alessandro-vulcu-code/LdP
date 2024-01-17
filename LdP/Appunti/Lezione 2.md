@@ -1,17 +1,20 @@
+---
+cards-deck: remote::LdP::Appunti
+---
+
 Reference:
 [[L02_1_Variabili.pdf]]
 [[L02_2_Espressioni_e_operatori.pdf]]
 [[L02_3_Dichiarazioni.pdf]]
 
-# Variabili e type safety
-
-### Tipo, oggetto, variabile, valore
+# Variabili e type safety 
+### Tipo, oggetto, variabile, valore #card
 - Il **tipo** definisce il tipo del contenuto, un range di valori e un insieme di operazioni per un oggetto
 - L'**oggetto** è una regione di memoria (RAM) con un tipo che specifica quale tipo di dato può essere inserito
 - La **variabile** è un oggetto con un nome 
 - Il **valore** è l'elemento posto dentro alla variabile
 
-### Tipo di una variabile
+### Tipo di una variabile 
 - Esso determina le operazioni che possono essere effettuate e il loro significato
 - Ogni tipo ha il suo formato **literal**
 ```c++
@@ -39,6 +42,7 @@ double x; // valore di x indefinito
 double y = x; // valore di y indefinito
 ```
 
+## Quali sono le conversioni sicure?
 Le conversioni sicure sono quelle che mantengono il valore, essenzialmente sono sicure le conversioni verso un tipo con maggiore capacità.
 - Bool → char 
 - Bool → int 
