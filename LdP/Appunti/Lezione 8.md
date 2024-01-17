@@ -11,7 +11,7 @@ Meglio organizzare il software in più file:
 I *file header* contengono:
 - Definizioni di classe
 - Dichiarazioni di funzione
-- Inclusi ( #include ) ma non compilati direttamente
+- Inclusi ( `#include`) ma non compilati direttamente
 
 Il *file sorgente* contiene:
 - Definizioni di funzioni e classi
